@@ -45,6 +45,7 @@ export default tseslint.config(
     },
     rules: {
       'import/no-unresolved': 'error',
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
 
