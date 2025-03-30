@@ -38,7 +38,7 @@ export default tseslint.config(
   {
     plugins: { import: pluginImport },
     settings: {
-      'import/parsers': { '@typescript-eslint/parser': [ '.ts', '.tsx' ] },
+      'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
       'import/resolver': {
         typescript: { alwaysTryTypes: true, project: './tsconfig.json' },
       },
@@ -50,7 +50,7 @@ export default tseslint.config(
 
   // --- 6. Custom Rules & Overrides for TS/RN files ---
   {
-    files: [ 'src/**/*.{ts,tsx}' ],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -61,7 +61,7 @@ export default tseslint.config(
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
       'react-native/no-inline-styles': 'warn',
-      '@typescript-eslint/no-unused-vars': [ 'warn', { argsIgnorePattern: '^_' } ],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
   },
