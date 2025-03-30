@@ -24,7 +24,7 @@ interface PaginatedApiResponse {
   info: ApiInfo;
 }
 
-interface UseInfiniteListQueryProps<TData extends PaginatedApiResponse, TError, TFilters> {
+interface UseInfiniteListQueryProps<TData extends PaginatedApiResponse, TFilters> {
   queryKeyBase: string; // e.g., 'characters', 'episodes'
   filters: TFilters;
   fetchFn: (params: TFilters & { page?: number }) => Promise<TData>;
@@ -32,13 +32,12 @@ interface UseInfiniteListQueryProps<TData extends PaginatedApiResponse, TError, 
 
 export function useInfiniteListQuery<
   TData extends PaginatedApiResponse,
-  TError = Error,
-  TFilters = Record<string, any>,
+  TFilters = Record<string, unknown>,
 >({
   queryKeyBase,
   filters,
   fetchFn,
-}: UseInfiniteListQueryProps<TData, TError, TFilters>): UseInfiniteQueryResult<TData, TError> {
+}: UseInfiniteListQueryProps<TData, TFilters>): UseInfiniteQueryResult<TData> {
   const queryKey: QueryKey = [queryKeyBase, filters];
 
   const queryFn = async ({
@@ -52,7 +51,7 @@ export function useInfiniteListQuery<
     return getPageParam(lastPage.info.next);
   };
 
-  return useInfiniteQuery<TData, TError, TData, QueryKey, number>({
+  return useInfiniteQuery<TData, Error, TData, QueryKey, number>({
     queryKey,
     queryFn,
     getNextPageParam,
