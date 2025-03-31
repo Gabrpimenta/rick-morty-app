@@ -10,6 +10,7 @@ import { AppHeader } from '@/components/layout/AppHeader';
 
 import type { TabParamList } from './types';
 import { useTheme } from 'styled-components';
+import { SettingsScreen } from '@/features/settings/screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -42,6 +43,7 @@ export function AppNavigator() {
       <Tab.Screen name="CharacterList" component={CharacterListScreen} />
       <Tab.Screen name="EpisodeList" component={EpisodeListScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 }
