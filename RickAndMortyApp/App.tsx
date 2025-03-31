@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useCallback } from 'react';
+
+import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -17,6 +18,7 @@ import { AppNavigator } from '@/navigation/AppNavigator';
 
 import { FONT_FAMILY_REGULAR, FONT_FAMILY_BOLD } from '@/config/theme';
 import { RootState } from '@/store/rootReducer';
+import { initDatabase } from '@/database/sqlite'; // <-- Import initDatabase
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +27,12 @@ export default function App() {
     [FONT_FAMILY_REGULAR]: require('@/assets/fonts/Exo2-Regular.ttf'),
     [FONT_FAMILY_BOLD]: require('@/assets/fonts/Exo2-Bold.ttf'),
   });
+
+  useEffect(() => {
+    initDatabase()
+      .then(() => console.log('Database initialization check complete.'))
+      .catch((err) => console.error('Database initialization failed:', err));
+  }, []);
 
   const AppContent = () => {
     const themeMode = useSelector((state: RootState) => state.theme.mode);
@@ -51,7 +59,6 @@ export default function App() {
       </View>
     );
   };
-
   return (
     <GestureHandlerRootView style={styles.flexContainer}>
       <SafeAreaProvider>
