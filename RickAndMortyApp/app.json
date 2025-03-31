@@ -4,11 +4,11 @@
     "slug": "RickAndMortyApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/images/rick-morty-pixel-art.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/images/rick-morty-pixel-art.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
