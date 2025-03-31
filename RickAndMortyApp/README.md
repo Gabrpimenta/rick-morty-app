@@ -53,7 +53,7 @@ A mobile application built with React Native (Expo) to explore characters and ep
 ### Prerequisites
 
 * Node.js (LTS recommended)
-* Bun (or Yarn / npm)
+* Yarn (or bun / npm)
 * Expo CLI (`npm install -g expo-cli` or `bun install -g expo-cli`)
 * Watchman (Recommended for macOS)
 * Development Environment Setup for React Native (Android Studio / Xcode) for building the Dev Client.
@@ -67,8 +67,8 @@ A mobile application built with React Native (Expo) to explore characters and ep
     ```
 2.  **Install dependencies:**
     ```bash
-    bun install
-    # OR yarn install
+    yarn install
+    # OR bun install
     # OR npm install
     ```
 
@@ -97,14 +97,14 @@ This project uses native modules (`expo-sqlite`, `react-native-skia`, `react-nat
 
 * **Run all tests:**
     ```bash
-    bun test
-    # OR yarn test
+    yarn test
+    # OR bun test
     # OR npm test
     ```
 * **Run tests with coverage:**
     ```bash
-    bun run test:coverage
-    # OR yarn test:coverage
+    yarn run test:coverage
+    # OR bun test:coverage
     # OR npm run test:coverage
     ```
     *(Check `package.json` for exact script names)*
@@ -163,11 +163,3 @@ This project uses native modules (`expo-sqlite`, `react-native-skia`, `react-nat
 * Add end-to-end tests (e.g., using Detox or Maestro).
 * Integrate analytics or error reporting (Sentry, etc.).
 * Refine accessibility features.
-
-## Contributing
-
-(Optional: Add guidelines if open to contributions)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details (assuming MIT).
