@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
-  Text,
   Button,
   ScrollView,
-  TextInput,
   TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import styled, { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 import type { CharacterStatus, CharacterGender } from '@/types/api';
-import * as layout from '@/constants/layout';
 import {
   FilterButton,
   FilterButtonText,
@@ -20,11 +16,11 @@ import {
   FilterOptionContainer,
   FilterSection,
   FilterTextInput,
+  ModalActions,
   ModalContainer,
   ModalContent,
   ModalHeader,
   ModalTitle,
-  styles,
 } from './styles';
 import { GENDER_OPTIONS, STATUS_OPTIONS } from '@/constants/layout';
 
@@ -42,7 +38,7 @@ interface CharacterFilterModalProps {
   currentFilters: FilterOptions;
 }
 
-export function CharacterFilterModal({
+export function CharacterFilterModal ({
   isVisible,
   onClose,
   onApply,
@@ -50,10 +46,10 @@ export function CharacterFilterModal({
 }: CharacterFilterModalProps) {
   const theme = useTheme();
 
-  const [tempStatus, setTempStatus] = useState(currentFilters.status);
-  const [tempGender, setTempGender] = useState(currentFilters.gender);
-  const [tempSpecies, setTempSpecies] = useState(currentFilters.species);
-  const [tempType, setTempType] = useState(currentFilters.type);
+  const [ tempStatus, setTempStatus ] = useState(currentFilters.status);
+  const [ tempGender, setTempGender ] = useState(currentFilters.gender);
+  const [ tempSpecies, setTempSpecies ] = useState(currentFilters.species);
+  const [ tempType, setTempType ] = useState(currentFilters.type);
 
   useEffect(() => {
     if (isVisible) {
@@ -62,7 +58,7 @@ export function CharacterFilterModal({
       setTempSpecies(currentFilters.species);
       setTempType(currentFilters.type);
     }
-  }, [isVisible, currentFilters]);
+  }, [ isVisible, currentFilters ]);
 
   const handleApply = () => {
     onApply({
@@ -142,10 +138,10 @@ export function CharacterFilterModal({
               />
             </FilterSection>
 
-            <View style={styles.modalActions}>
-              <Button title="Reset" onPress={handleReset} color={theme.colors.textSecondary} />
+            <ModalActions>
+              <Button title="Reset" onPress={handleReset} color={theme.colors.primary} />
               <Button title="Apply Filters" onPress={handleApply} color={theme.colors.primary} />
-            </View>
+            </ModalActions>
           </ScrollView>
         </ModalContent>
       </ModalContainer>

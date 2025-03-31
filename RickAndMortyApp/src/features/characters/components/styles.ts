@@ -1,17 +1,5 @@
 import styled from 'styled-components/native';
 import * as layout from '@/constants/layout';
-import { StyleSheet } from 'react-native';
-
-export const styles = StyleSheet.create({
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: layout.SCREEN_PADDING,
-    paddingTop: layout.SCREEN_PADDING / 2,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(128, 128, 128, 0.2)',
-  },
-});
 
 export const ModalContainer = styled.View`
   flex: 1;
@@ -95,4 +83,13 @@ export const FilterButtonText = styled.Text<{ isActive: boolean }>`
       : props.theme.colors.textSecondary};
   font-family: ${(props) => props.theme.typography.fontFamilyRegular};
   font-size: ${(props) => props.theme.typography.fontSizeCaption}px;
+`;
+
+export const ModalActions = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: ${layout.SCREEN_PADDING}px;
+  padding-top: ${layout.SCREEN_PADDING / 2}px;
+  border-top-width: 1px;
+  border-top-color: ${(props) => props.theme.colors.border};
 `;
