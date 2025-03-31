@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -16,9 +16,11 @@ import { StyledComponentsThemeProvider } from '@/providers/StyledComponentsTheme
 
 import { AppNavigator } from '@/navigation/AppNavigator';
 
-import { FONT_FAMILY_REGULAR, FONT_FAMILY_BOLD } from '@/config/theme';
 import { RootState } from '@/store/rootReducer';
-import { initDatabase } from '@/database/sqlite'; // <-- Import initDatabase
+import { initDatabase } from '@/database/sqlite';
+import { loadInitialTheme } from '@/store/slices/themeSlice';
+import type { AppDispatch } from '@/store';
+import { FONT_FAMILY_BOLD, FONT_FAMILY_REGULAR } from '@/constants/layout';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,7 +37,12 @@ export default function App() {
   }, []);
 
   const AppContent = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const themeMode = useSelector((state: RootState) => state.theme.mode);
+
+    useEffect(() => {
+      dispatch(loadInitialTheme());
+    }, [dispatch]);
 
     const onLayoutRootView = useCallback(async () => {
       if (fontsLoaded || fontError) {
@@ -59,6 +66,7 @@ export default function App() {
       </View>
     );
   };
+
   return (
     <GestureHandlerRootView style={styles.flexContainer}>
       <SafeAreaProvider>
@@ -75,7 +83,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  flexContainer: {
-    flex: 1,
-  },
+  flexContainer: { flex: 1 },
 });
