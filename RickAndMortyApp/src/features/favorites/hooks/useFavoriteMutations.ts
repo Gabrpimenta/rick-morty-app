@@ -35,7 +35,7 @@ export const useRemoveFavoriteMutation = () => {
     onSuccess: (data, variables) => {
       console.log('Successfully removed favorite, invalidating queries...');
       queryClient.invalidateQueries({
-        queryKey: [queryKeys.isFavorite, variables.itemType, variables.item.id],
+        queryKey: [queryKeys.isFavorite, variables.itemType, variables.itemId],
       });
       queryClient.invalidateQueries({ queryKey: [queryKeys.favorites] });
     },
