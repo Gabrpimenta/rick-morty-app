@@ -109,25 +109,33 @@ This project uses native modules (`expo-sqlite`, `react-native-skia`, `react-nat
     ```
     *(Check `package.json` for exact script names)*
 
-Tests include:
-* **Unit Tests (Jest):** Located in `tests/unit` or alongside source files (`*.test.ts`). Focus on repositories, Redux logic, hooks.
-* **Functional Tests (Jest + RNTL):** Located in `tests/functional` (`*.test.tsx`). Focus on screen rendering, user interactions (filtering, favoriting), using the custom `render` function from `tests/test-utils.tsx`.
+## Tests
+
+### Unit Tests (Jest)
+* Located in `tests/unit` or alongside source files (`*.test.ts`).
+* Focus on repositories, Redux logic, and hooks.
+
+### Functional Tests (Jest + RNTL)
+* Located in `tests/functional` (`*.test.tsx`).
+* Focus on screen rendering and user interactions (e.g., filtering, favoriting).
+* Utilizes the custom `render` function from `tests/test-utils.tsx`.
 
 ## Folder Structure
 
+```
 ├── src/
 │   ├── api/          # Axios instance, API endpoint functions
 │   ├── assets/       # Static assets (fonts, images)
 │   ├── components/   # Shared UI components (common, layout, Skia cards)
 │   ├── config/       # App configuration (theme definitions)
-│   ├── constants/    # Global constants (layout, queryKeys, api paths)
+│   ├── constants/    # Global constants (layout, queryKeys, API paths)
 │   ├── database/     # SQLite setup and repositories
 │   ├── features/     # Feature-specific modules (screens, components, hooks)
 │   ├── hooks/        # Global custom hooks (useDebounce, usePager, useAppState, etc.)
 │   ├── navigation/   # React Navigation setup (navigators, types)
 │   ├── providers/    # Global context providers (Redux, QueryClient, Theme)
 │   ├── store/        # Redux Toolkit setup (store, rootReducer, slices)
-│   ├── types/        # Shared TypeScript types (api, common, styled)
+│   ├── types/        # Shared TypeScript types (API, common, styled)
 │   └── utils/        # Utility functions
 ├── tests/            # Test files (functional, unit, test-utils)
 ├── .vscode/          # VS Code settings (optional)
@@ -140,6 +148,7 @@ Tests include:
 ├── package.json      # Project dependencies and scripts
 ├── prettier.config.cjs # Prettier configuration (or .prettierrc)
 └── tsconfig.json     # TypeScript configuration
+```
 
 
 ## Potential Improvements / Future Work
