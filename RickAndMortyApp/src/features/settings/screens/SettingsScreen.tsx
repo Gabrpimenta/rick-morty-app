@@ -27,7 +27,7 @@ const SettingLabel = styled.Text`
   font-family: ${(props) => props.theme.typography.fontFamilyRegular};
 `;
 
-export function SettingsScreen () {
+export function SettingsScreen() {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const currentThemeMode = useSelector((state: RootState) => state.theme.mode);

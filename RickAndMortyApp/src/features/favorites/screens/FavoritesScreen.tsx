@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { View, SectionList, useWindowDimensions, type ListRenderItemInfo } from 'react-native';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
-import styled, { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 
 import { getFavorites, type SavedFavorite } from '@/database/repositories/FavoriteRepository';
 
@@ -14,20 +14,8 @@ import { CenteredContainer } from '@/components/common/CenteredContainer';
 import { CharacterCard } from '@/components/InteractiveCard/CharacterCard';
 import { EpisodeCard } from '@/components/InteractiveCard/EpisodeCard';
 import type { Character, Episode } from '@/types/api';
-import { styles } from './styles';
-
-// --- Constants ---
-const LIST_PADDING = 16;
-const CHARACTER_CARD_HEIGHT = 320;
-const EPISODE_CARD_HEIGHT = 120;
-
-const SectionHeaderText = styled.Text`
-  font-size: ${(props) => props.theme.typography.fontSizeH2}px;
-  font-family: ${(props) => props.theme.typography.fontFamilyBold};
-  color: ${(props) => props.theme.colors.textPrimary};
-  margin-bottom: ${(props) => props.theme.spacing.small}px;
-  margin-top: ${(props) => props.theme.spacing.large}px;
-`;
+import { SectionHeaderText, styles } from './styles';
+import { CHARACTER_CARD_HEIGHT, EPISODE_CARD_HEIGHT, LIST_PADDING } from '@/constants/layout';
 
 export function FavoritesScreen() {
   const theme = useTheme();

@@ -1,35 +1,69 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
 import {
   View,
-  Text,
   ActivityIndicator,
-  StyleSheet,
-  Button,
   useWindowDimensions,
   FlatList,
-  TouchableOpacity,
   type ListRenderItemInfo,
+  Platform,
 } from 'react-native';
 import { useCharacterList } from '../hooks/useCharacterList';
-import { CharacterCard } from '@/components/InteractiveCard/CharacterCard';
-import type { Character } from '@/types/api';
-import { useTheme } from 'styled-components/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { useDebounce } from '@/hooks/useDebounce';
+import { usePager } from '@/hooks/usePager';
 import { LoadingIndicator } from '@/components/common/LoadingIndicator';
 import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 import { InfoText } from '@/components/common/InfoText';
 import { CenteredContainer } from '@/components/common/CenteredContainer';
-import { CARD_VERTICAL_MARGIN, HORIZONTAL_PADDING, styles } from './styles';
+import { CharacterCard } from '@/components/InteractiveCard/CharacterCard';
+import { CharacterFilterModal } from '../components/CharacterFilterModal';
+import type { Character, CharacterFilters, CharacterStatus, CharacterGender } from '@/types/api';
+import { useTheme } from 'styled-components/native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import * as layout from '@/constants/layout';
+import {
+  ArrowButton,
+  ArrowContainer,
+  CardOuterContainer,
+  FilterBadge,
+  FilterBadgeText,
+  FilterButton,
+  ScreenContainer,
+  SearchAndFilterContainer,
+  SearchInput,
+  styles,
+} from './styles';
 
 export function CharacterListScreen() {
   const theme = useTheme();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
-  const flatListRef = useRef<FlatList<Character>>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const cardWidth = screenWidth - HORIZONTAL_PADDING * 2;
-  const cardHeight = screenHeight - CARD_VERTICAL_MARGIN * 2 - 50 - 60;
 
-  const filters = {};
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [appliedStatus, setAppliedStatus] = useState<CharacterStatus | 'All'>('All');
+  const [appliedGender, setAppliedGender] = useState<CharacterGender | 'All'>('All');
+  const [appliedSpecies, setAppliedSpecies] = useState('');
+  const [appliedType, setAppliedType] = useState('');
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+
+  const cardWidth = screenWidth - layout.PAGER_HORIZONTAL_PADDING * 2;
+  const approxHeaderHeight = Platform.OS === 'ios' ? 90 : 60;
+  const approxTabBarHeight = Platform.OS === 'ios' ? 80 : 60;
+  const searchFilterHeight = 60;
+  const cardHeight =
+    screenHeight -
+    layout.PAGER_VERTICAL_MARGIN * 2 -
+    approxHeaderHeight -
+    approxTabBarHeight -
+    searchFilterHeight;
+
+  const filters = useMemo((): CharacterFilters => {
+    const activeFilters: CharacterFilters = { name: debouncedSearchTerm };
+    if (appliedStatus !== 'All') activeFilters.status = appliedStatus;
+    if (appliedGender !== 'All') activeFilters.gender = appliedGender;
+    if (appliedSpecies.trim()) activeFilters.species = appliedSpecies.trim();
+    if (appliedType.trim()) activeFilters.type = appliedType.trim();
+    return activeFilters;
+  }, [debouncedSearchTerm, appliedStatus, appliedGender, appliedSpecies, appliedType]);
 
   const {
     data,
@@ -43,69 +77,111 @@ export function CharacterListScreen() {
     refetch,
   } = useCharacterList(filters);
 
-  // Flatten data as before
-  const characters = useMemo(() => {
-    return data?.pages.flatMap((page) => page.results) ?? [];
-  }, [data]);
+  const characters = useMemo(() => data?.pages.flatMap((page) => page.results) ?? [], [data]);
 
-  const loadNextPage = () => {
+  const {
+    pagerRef,
+    currentIndex,
+    handlePrevious,
+    handleNext,
+    scrollToStart,
+    onViewableItemsChanged,
+    viewabilityConfig,
+  } = usePager<Character>(characters.length);
+
+  const prevFiltersRef = useRef(JSON.stringify(filters));
+  useEffect(() => {
+    const currentFiltersString = JSON.stringify(filters);
+    if (prevFiltersRef.current !== currentFiltersString) {
+      scrollToStart();
+      prevFiltersRef.current = currentFiltersString;
+    }
+  }, [filters, scrollToStart]);
+
+  const loadNextPage = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const handleScrollToIndex = (index: number) => {
-    if (flatListRef.current && index >= 0 && index < characters.length) {
-      flatListRef.current.scrollToIndex({ animated: true, index });
-      setCurrentIndex(index); // Update state
-    }
-  };
-
-  const handlePrevious = () => {
-    handleScrollToIndex(currentIndex - 1);
-  };
-
-  const handleNext = () => {
-    if (currentIndex >= characters.length - 5 && hasNextPage) {
+  useEffect(() => {
+    if (currentIndex >= characters.length - 3 && hasNextPage && !isFetchingNextPage) {
       loadNextPage();
     }
-    handleScrollToIndex(currentIndex + 1);
+  }, [currentIndex, characters.length, hasNextPage, isFetchingNextPage, loadNextPage]);
+
+  const applyFilters = (newFilters: {
+    status: CharacterStatus | 'All';
+    gender: CharacterGender | 'All';
+    species: string;
+    type: string;
+  }) => {
+    setAppliedStatus(newFilters.status);
+    setAppliedGender(newFilters.gender);
+    setAppliedSpecies(newFilters.species);
+    setAppliedType(newFilters.type);
+    setIsFilterModalVisible(false);
   };
 
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: Array<{ index: number | null }> }) => {
-      if (viewableItems[0] && viewableItems[0].index !== null) {
-        setCurrentIndex(viewableItems[0].index);
-      }
-    }
-  ).current;
-  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50 }).current;
+  const renderCharacterCard = useCallback(
+    ({ item }: ListRenderItemInfo<Character>) => {
+      return (
+        <CardOuterContainer screenWidth={screenWidth}>
+          <CharacterCard item={item} width={cardWidth} height={cardHeight} />
+        </CardOuterContainer>
+      );
+    },
+    [screenWidth, cardWidth, cardHeight]
+  );
 
-  const renderCharacterCard = ({ item }: ListRenderItemInfo<Character>) => {
-    return (
-      <View style={[styles.cardContainer, { width: screenWidth }]}>
-        <CharacterCard item={item} width={cardWidth} height={cardHeight} />
-      </View>
-    );
-  };
+  const activeFilterCount = [
+    appliedStatus !== 'All',
+    appliedGender !== 'All',
+    !!appliedSpecies,
+    !!appliedType,
+  ].filter(Boolean).length;
+  const showInitialLoading = isLoading && !searchTerm && activeFilterCount === 0;
 
-  if (isLoading) {
-    return <LoadingIndicator />;
-  }
-
-  if (isError && !characters.length) {
-    return <ErrorDisplay message={error?.message || 'Failed to load data'} onRetry={refetch} />;
-  }
+  if (showInitialLoading) return <LoadingIndicator />;
+  if (isError && !characters.length)
+    return <ErrorDisplay message={error?.message} onRetry={refetch} />;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <ScreenContainer>
+      <SearchAndFilterContainer>
+        <SearchInput
+          placeholder="Search Characters..."
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+          autoCapitalize="none"
+          autoCorrect={false}
+          clearButtonMode="while-editing"
+        />
+        <FilterButton onPress={() => setIsFilterModalVisible(true)}>
+          <Ionicons
+            name="filter"
+            size={24}
+            color={activeFilterCount > 0 ? theme.colors.accent : theme.colors.primary}
+          />
+          {activeFilterCount > 0 && (
+            <FilterBadge>
+              <FilterBadgeText>{activeFilterCount}</FilterBadgeText>
+            </FilterBadge>
+          )}
+        </FilterButton>
+
+        {isFetching && !isLoading && !isFetchingNextPage && (
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        )}
+      </SearchAndFilterContainer>
+
       <FlatList
-        ref={flatListRef}
+        ref={pagerRef}
         data={characters}
         renderItem={renderCharacterCard}
         keyExtractor={(item) => item.id.toString()}
-        horizontal={true}
-        pagingEnabled={true}
+        horizontal
+        pagingEnabled
         showsHorizontalScrollIndicator={false}
         onEndReached={loadNextPage}
         onEndReachedThreshold={0.5}
@@ -114,38 +190,42 @@ export function CharacterListScreen() {
         windowSize={5}
         maxToRenderPerBatch={3}
         initialNumToRender={1}
+        getItemLayout={(_data, index) => ({
+          length: screenWidth,
+          offset: screenWidth * index,
+          index,
+        })}
         ListFooterComponent={() =>
           isFetchingNextPage ? (
-            <View style={[styles.cardContainer, styles.centerContent, { width: screenWidth / 2 }]}>
-              <ActivityIndicator color={theme.colors.primary} />
+            <View style={[styles.footerContainer, { width: screenWidth / 2, height: cardHeight }]}>
+              <ActivityIndicator size="large" color={theme.colors.primary} />
             </View>
           ) : null
         }
         ListEmptyComponent={() =>
-          !isFetching ? (
-            <CenteredContainer style={{ width: screenWidth }}>
-              <InfoText>No characters found.</InfoText>
+          !isFetching && !isLoading ? (
+            <CenteredContainer style={{ width: cardWidth }}>
+              <InfoText>
+                {searchTerm || activeFilterCount > 0
+                  ? `No characters found matching current criteria.`
+                  : 'No characters found.'}
+              </InfoText>
             </CenteredContainer>
           ) : null
         }
       />
 
-      <View style={styles.arrowContainer}>
-        <TouchableOpacity
-          onPress={handlePrevious}
-          disabled={currentIndex <= 0}
-          style={styles.arrowButton}
-        >
+      <ArrowContainer>
+        <ArrowButton onPress={handlePrevious} disabled={currentIndex <= 0}>
           <Ionicons
             name="arrow-back-circle"
             size={40}
             color={currentIndex <= 0 ? theme.colors.textDisabled : theme.colors.primary}
           />
-        </TouchableOpacity>
-        <TouchableOpacity
+        </ArrowButton>
+        <ArrowButton
           onPress={handleNext}
           disabled={currentIndex >= characters.length - 1 && !hasNextPage}
-          style={styles.arrowButton}
         >
           <Ionicons
             name="arrow-forward-circle"
@@ -156,8 +236,20 @@ export function CharacterListScreen() {
                 : theme.colors.primary
             }
           />
-        </TouchableOpacity>
-      </View>
-    </View>
+        </ArrowButton>
+      </ArrowContainer>
+
+      <CharacterFilterModal
+        isVisible={isFilterModalVisible}
+        onClose={() => setIsFilterModalVisible(false)}
+        onApply={applyFilters}
+        currentFilters={{
+          status: appliedStatus,
+          gender: appliedGender,
+          species: appliedSpecies,
+          type: appliedType,
+        }}
+      />
+    </ScreenContainer>
   );
 }
