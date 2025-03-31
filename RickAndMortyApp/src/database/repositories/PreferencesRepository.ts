@@ -1,4 +1,3 @@
-// src/database/repositories/PreferencesRepository.ts
 import { db } from '../sqlite';
 import type { ThemeMode } from '@/store/slices/themeSlice';
 
