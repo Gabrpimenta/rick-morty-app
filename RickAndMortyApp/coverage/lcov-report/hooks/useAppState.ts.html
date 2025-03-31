@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for hooks/useDebounce.ts</title>
+    <title>Code coverage report for hooks/useAppState.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">hooks</a> useDebounce.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">hooks</a> useAppState.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -87,21 +87,7 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,6 +100,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -121,37 +111,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, useEffect } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useRef } from 'react';
+import { AppState, type AppStateStatus } from 'react-native';
 &nbsp;
 /**
- * Custom hook to debounce a value.
- *
- * This hook takes a value and a delay, and returns a new value
- * that only updates after the specified delay has passed without
- * the original value changing. This is useful for delaying expensive
- * operations like API calls based on user input (e.g., typing in a search box).
- *
- * @template T The type of the value to debounce.
- * @param {T} value The value to debounce.
- * @param {number} delay The debounce delay in milliseconds.
- * @returns {T} The debounced value.
+ * Custom hook to subscribe to AppState changes.
+ * @param onChange Callback function to execute when AppState changes.
  */
-export function <span class="fstat-no" title="function not covered" >useDebounce&lt;</span>T&gt;(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = <span class="cstat-no" title="statement not covered" >useState&lt;T&gt;(value);</span>
+export function <span class="fstat-no" title="function not covered" >useAppState(</span>onChange: (status: AppStateStatus) =&gt; void) {
+  const appStateRef = <span class="cstat-no" title="statement not covered" >useRef(AppState.currentState);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const handler = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      setDebouncedValue(value);</span>
-    }, delay);
+    const subscription = <span class="cstat-no" title="statement not covered" >AppState.addEventListener('change', <span class="fstat-no" title="function not covered" >(n</span>extAppState) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if (appStateRef.current !== nextAppState) {</span>
+<span class="cstat-no" title="statement not covered" >        onChange(nextAppState);</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      appStateRef.current = nextAppState;</span>
+    });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      clearTimeout(handler);</span>
+<span class="cstat-no" title="statement not covered" >      subscription.remove();</span>
     };
-  }, [value, delay]);
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  return debouncedValue;</span>
+  }, [onChange]);
 }
 &nbsp;</pre></td></tr></table></pre>
 

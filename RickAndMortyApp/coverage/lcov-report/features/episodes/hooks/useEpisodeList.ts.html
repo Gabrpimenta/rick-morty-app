@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for features/characters/hooks/useCharacterList.ts</title>
+    <title>Code coverage report for features/episodes/hooks/useEpisodeList.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">features/characters/hooks</a> useCharacterList.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">features/episodes/hooks</a> useEpisodeList.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -78,22 +78,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useInfiniteListQuery } from '@/hooks/useInfiniteListQuery';
-import { getCharacters } from '@/api/endpoints/characters';
-import type { CharacterFilters, CharactersApiResponse } from '@/types/api';
+import { getEpisodes } from '@/api/endpoints/episodes';
+import type { EpisodeFilters, EpisodesApiResponse } from '@/types/api';
 &nbsp;
-export const useCharacterList = (filters: CharacterFilters = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
-  return useInfiniteListQuery&lt;CharactersApiResponse, CharacterFilters&gt;({
-    queryKeyBase: 'characters',
+export const useEpisodeList = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ilters: EpisodeFilters = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  return useInfiniteListQuery&lt;EpisodesApiResponse, EpisodeFilters&gt;({</span>
+    queryKeyBase: 'episodes',
     filters: filters,
-    fetchFn: getCharacters,
+    fetchFn: getEpisodes,
   });
 };
 &nbsp;</pre></td></tr></table></pre>
