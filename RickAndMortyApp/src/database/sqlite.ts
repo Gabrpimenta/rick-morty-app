@@ -18,11 +18,13 @@ export const initDatabase = async (): Promise<void> => {
     return;
   }
   try {
-    await db.withTransactionAsync(async () => {
-      console.log('Initializing favorites table using new API...');
-      await db.execAsync(`
-        PRAGMA journal_mode = WAL; -- Recommended for performance
+    await db.execAsync('PRAGMA journal_mode = WAL;');
+    console.log('Journal mode set to WAL.');
 
+    await db.withTransactionAsync(async () => {
+      console.log('Initializing favorites table structure...');
+
+      await db.execAsync(`
         CREATE TABLE IF NOT EXISTS favorites (
           id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
           itemId INTEGER NOT NULL,
@@ -36,7 +38,7 @@ export const initDatabase = async (): Promise<void> => {
         CREATE UNIQUE INDEX IF NOT EXISTS idx_favorites_unique ON favorites(itemId, itemType);
       `);
 
-      console.log('Favorites table initialized successfully using new API.');
+      console.log('Favorites table structure initialized successfully.');
     });
 
     console.log('Database initialization transaction committed successfully.');
