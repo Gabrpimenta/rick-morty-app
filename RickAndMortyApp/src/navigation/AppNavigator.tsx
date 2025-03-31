@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import CharacterListScreen from '@/features/characters/screens/CharacterListScreen';
-import EpisodeListScreen from '@/features/episodes/screens/EpisodeListScreen';
+import { CharacterListScreen } from '@/features/characters/screens/CharacterListScreen';
+import { EpisodeListScreen } from '@/features/episodes/screens/EpisodeListScreen';
 import FavoritesScreen from '@/features/favorites/screens/FavoritesScreen';
 import SettingsScreen from '@/features/settings/screens/SettingsScreen';
 import Ionicons from '@expo/vector-icons/Ionicons';
