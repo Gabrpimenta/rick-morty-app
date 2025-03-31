@@ -13,9 +13,9 @@ export interface CharacterLocation {
 export interface Character {
   id: number;
   name: string;
-  status: 'Alive' | 'Dead' | 'unknown';
+  status: CharacterStatus;
   species: string;
-  gender: 'Female' | 'Male' | 'Genderless' | 'unknown';
+  gender: CharacterGender;
   origin: CharacterLocation;
   location: CharacterLocation;
   image: string;
@@ -47,11 +47,15 @@ export interface EpisodesApiResponse {
 export interface CharacterFilters {
   page?: number;
   name?: string;
-  status?: 'Alive' | 'Dead' | 'unknown';
+  status?: CharacterStatus;
   species?: string;
   type?: string;
-  gender?: 'Female' | 'Male' | 'Genderless' | 'unknown';
+  gender?: CharacterGender;
 }
+
+export type CharacterStatus = 'Alive' | 'Dead' | 'unknown';
+
+export type CharacterGender = 'Female' | 'Male' | 'Genderless' | 'unknown';
 
 export interface EpisodeFilters {
   page?: number;
