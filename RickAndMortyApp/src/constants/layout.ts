@@ -1,3 +1,5 @@
+import { CharacterGender, CharacterStatus } from '@/types/api';
+
 // General List/Screen Padding
 export const SCREEN_PADDING = 16;
 export const LIST_ITEM_MARGIN_BOTTOM = 16;
@@ -42,3 +44,13 @@ export const PAGER_VERTICAL_MARGIN = 40;
 // Fonts
 export const FONT_FAMILY_REGULAR = 'Exo2-Regular';
 export const FONT_FAMILY_BOLD = 'Exo2-Bold';
+
+// Character Filters
+export const GENDER_OPTIONS: (CharacterGender | 'All')[] = [
+  'All',
+  'Female',
+  'Male',
+  'Genderless',
+  'unknown',
+];
+export const STATUS_OPTIONS: (CharacterStatus | 'All')[] = ['All', 'Alive', 'Dead', 'unknown'];
