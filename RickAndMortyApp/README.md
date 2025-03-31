@@ -37,7 +37,6 @@ A mobile application built with React Native (Expo) to explore characters and ep
 * **List View:** FlatList (configured for horizontal paging)
 * **Linting/Formatting:** ESLint (with Flat Config - `eslint.config.mjs`), Prettier
 * **Testing:** Jest, React Native Testing Library (RNTL)
-* **Utilities:** `date-fns` (or `dayjs` - assumed for date formatting), `@react-native-community/netinfo` (for React Query online manager), `cross-env` (for scripts).
 
 ## Architecture & Design Patterns
 
@@ -135,13 +134,12 @@ This project uses native modules (`expo-sqlite`, `react-native-skia`, `react-nat
 │   ├── navigation/   # React Navigation setup (navigators, types)
 │   ├── providers/    # Global context providers (Redux, QueryClient, Theme)
 │   ├── store/        # Redux Toolkit setup (store, rootReducer, slices)
-│   ├── types/        # Shared TypeScript types (API, common, styled)
-│   └── utils/        # Utility functions
+│   └── types/        # Shared TypeScript types (API, common, styled)
 ├── tests/            # Test files (functional, unit, test-utils)
 ├── .vscode/          # VS Code settings (optional)
 ├── app.json          # Expo configuration
 ├── babel.config.js   # Babel configuration
-├── bun.lockb         # Bun lock file (or package-lock.json / yarn.lock)
+├── yarn.lock        # Bun lock file (or package-lock.json / bun.lock)
 ├── eslint.config.mjs # ESLint Flat Config
 ├── jest.config.js    # Jest configuration
 ├── jest.setup.js     # Jest setup (mocks)
