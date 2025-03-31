@@ -8,7 +8,7 @@ A mobile application built with React Native (Expo) to explore characters and ep
 
 * **Browse Characters & Episodes:** View paginated lists of characters and episodes fetched from the [Rick and Morty API](https://rickandmortyapi.com/).
 * **Horizontal Pager View:** Navigate through characters and episodes one card at a time using swipe gestures or navigation arrows.
-* **Interactive 3D Cards:** Character cards rendered with React Native Skia, featuring a full-image background and a 3D tilt effect controlled by touch gestures (using Reanimated & Gesture Handler). Episode cards are static (by design).
+* **Custom Skia Cards:** Character and Episode cards rendered with React Native Skia, featuring custom styling and layouts (e.g., full-image background for characters).
 * **Search:** Filter characters and episodes by name using a debounced search input.
 * **Advanced Filtering:**
     * Filter characters by Status, Gender, Species, and Type via a filter modal.
@@ -151,6 +151,7 @@ This project uses native modules (`expo-sqlite`, `react-native-skia`, `react-nat
 
 ## Potential Improvements / Future Work
 
+* Implement interactive 3D tilt effect for Character cards using React Native Reanimated and Gesture Handler (currently static due to stability issues within lists).
 * Implement the "Locations" feature from the API.
 * Add more detailed Character/Episode detail views (potentially triggered from cards).
 * Implement more sophisticated Skia effects (e.g., holo/shimmer effect on cards based on device tilt).

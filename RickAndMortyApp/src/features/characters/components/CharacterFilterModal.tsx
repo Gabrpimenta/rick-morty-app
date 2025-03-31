@@ -138,11 +138,11 @@ export function CharacterFilterModal ({
               />
             </FilterSection>
 
-            <ModalActions>
-              <Button title="Reset" onPress={handleReset} color={theme.colors.primary} />
-              <Button title="Apply Filters" onPress={handleApply} color={theme.colors.primary} />
-            </ModalActions>
           </ScrollView>
+          <ModalActions>
+            <Button title="Reset" onPress={handleReset} color={theme.colors.primary} />
+            <Button title="Apply Filters" onPress={handleApply} color={theme.colors.primary} />
+          </ModalActions>
         </ModalContent>
       </ModalContainer>
     </Modal>
