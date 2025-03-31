@@ -1,6 +1,7 @@
 import { useQuery, QueryKey } from '@tanstack/react-query';
 import { isFavorite as isFavoriteDb } from '@/database/repositories/FavoriteRepository';
-import type { ItemType } from '@/database/repositories/FavoriteRepository';
+import { ItemType } from '@/types/common';
+import { queryKeys } from '@/constants/queryKeys';
 
 /**
  * React Query hook to check if an item is favorited in the database.
@@ -9,7 +10,7 @@ import type { ItemType } from '@/database/repositories/FavoriteRepository';
  * @returns Query result containing boolean indicating favorite status.
  */
 export const useIsFavorite = (itemType: ItemType | undefined, itemId: number | undefined) => {
-  const queryKey: QueryKey = ['isFavorite', itemType, itemId];
+  const queryKey: QueryKey = [queryKeys.isFavorite, itemType, itemId];
 
   return useQuery<boolean, Error>({
     queryKey: queryKey,

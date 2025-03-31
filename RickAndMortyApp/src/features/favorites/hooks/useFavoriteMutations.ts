@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient, QueryKey } from '@tanstack/react-query';
 import { addFavorite, removeFavorite } from '@/database/repositories/FavoriteRepository';
-import type { ItemType, FavoriteItem } from '@/database/repositories/FavoriteRepository';
+import { FavoriteItem, ItemType } from '@/types/common';
+import { queryKeys } from '@/constants/queryKeys';
 
 /**
  * React Query mutation hook for adding an item to favorites.
@@ -13,9 +14,9 @@ export const useAddFavoriteMutation = () => {
     onSuccess: (data, variables) => {
       console.log('Successfully added favorite, invalidating queries...');
       queryClient.invalidateQueries({
-        queryKey: ['isFavorite', variables.itemType, variables.item.id],
+        queryKey: [queryKeys.isFavorite, variables.itemType, variables.item.id],
       });
-      queryClient.invalidateQueries({ queryKey: ['favorites'] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.favorites] });
     },
     onError: (error) => {
       console.error('Error adding favorite via mutation:', error);
@@ -34,9 +35,9 @@ export const useRemoveFavoriteMutation = () => {
     onSuccess: (data, variables) => {
       console.log('Successfully removed favorite, invalidating queries...');
       queryClient.invalidateQueries({
-        queryKey: ['isFavorite', variables.itemType, variables.itemId],
+        queryKey: [queryKeys.isFavorite, variables.itemType, variables.item.id],
       });
-      queryClient.invalidateQueries({ queryKey: ['favorites'] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.favorites] });
     },
     onError: (error) => {
       console.error('Error removing favorite via mutation:', error);

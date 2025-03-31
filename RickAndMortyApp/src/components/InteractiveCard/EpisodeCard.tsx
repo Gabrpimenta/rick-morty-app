@@ -14,24 +14,24 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { RootState } from '@/store/rootReducer';
 import { lightTheme, darkTheme } from '@/config/theme';
 import type { Episode } from '@/types/api';
-import type { ItemType } from '@/database/repositories/FavoriteRepository';
 
 import { useIsFavorite } from '@/features/favorites/hooks/useIsFavorite';
 import {
   useAddFavoriteMutation,
   useRemoveFavoriteMutation,
 } from '@/features/favorites/hooks/useFavoriteMutations';
+import { ItemType } from '@/types/common';
+import {
+  EPISODE_BORDER_RADIUS,
+  EPISODE_PADDING,
+  EPISODE_TEXT_LINE_HEIGHT_GAP,
+} from '@/constants/layout';
 
 interface EpisodeCardProps {
   item: Episode;
   width: number;
   height: number;
 }
-
-// --- Constants ---
-const CARD_BORDER_RADIUS = 10;
-const PADDING = 12;
-const TEXT_LINE_HEIGHT_GAP = 5;
 
 export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
   const themeMode = useSelector((state: RootState) => state.theme.mode);
@@ -94,7 +94,7 @@ export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
           width,
           height,
           backgroundColor: theme.colors.surface,
-          borderRadius: CARD_BORDER_RADIUS,
+          borderRadius: EPISODE_BORDER_RADIUS,
         }}
       />
     );
@@ -111,7 +111,7 @@ export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
           y={0}
           width={width}
           height={height}
-          r={CARD_BORDER_RADIUS}
+          r={EPISODE_BORDER_RADIUS}
           color={theme.colors.surface}
         />
         <RoundedRect
@@ -119,26 +119,26 @@ export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
           y={0}
           width={width}
           height={height}
-          r={CARD_BORDER_RADIUS}
+          r={EPISODE_BORDER_RADIUS}
           style="stroke"
           strokeWidth={1}
           color={theme.colors.border}
         />
 
         <SkiaText
-          x={PADDING}
-          y={PADDING + theme.typography.fontSizeTitle * 0.8}
+          x={EPISODE_PADDING}
+          y={EPISODE_PADDING + theme.typography.fontSizeTitle * 0.8}
           text={item.name ?? ''}
           font={titleFont}
           color={textColor}
         />
 
         <SkiaText
-          x={PADDING}
+          x={EPISODE_PADDING}
           y={
-            PADDING +
+            EPISODE_PADDING +
             theme.typography.fontSizeTitle +
-            TEXT_LINE_HEIGHT_GAP +
+            EPISODE_TEXT_LINE_HEIGHT_GAP +
             theme.typography.fontSizeBody * 0.8
           }
           text={item.episode ?? ''}
@@ -147,8 +147,8 @@ export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
         />
 
         <SkiaText
-          x={PADDING}
-          y={height - PADDING - theme.typography.fontSizeCaption * 0.2}
+          x={EPISODE_PADDING}
+          y={height - EPISODE_PADDING - theme.typography.fontSizeCaption * 0.2}
           text={`Aired: ${item.air_date ?? 'Unknown'}`}
           font={captionFont}
           color={textSecondaryColor}
@@ -178,7 +178,7 @@ export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
 const styles = StyleSheet.create({
   cardContainer: {
     overflow: 'hidden',
-    borderRadius: CARD_BORDER_RADIUS,
+    borderRadius: EPISODE_BORDER_RADIUS,
   },
   absoluteFill: {
     position: 'absolute',
@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
   },
   favoriteButton: {
     position: 'absolute',
-    top: PADDING / 2,
-    right: PADDING / 2,
+    top: EPISODE_PADDING / 2,
+    right: EPISODE_PADDING / 2,
     zIndex: 10,
     padding: 4,
     backgroundColor: 'rgba(0,0,0,0.1)',

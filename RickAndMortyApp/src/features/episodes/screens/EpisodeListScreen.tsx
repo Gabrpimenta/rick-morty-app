@@ -17,10 +17,7 @@ import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 import { CenteredContainer } from '@/components/common/CenteredContainer';
 import { InfoText } from '@/components/common/InfoText';
 import { styles } from './styles';
-
-// --- Constants ---
-const LIST_PADDING = 16;
-const EPISODE_CARD_HEIGHT = 120;
+import { EPISODE_CARD_HEIGHT, LIST_PADDING } from '@/constants/layout';
 
 export function EpisodeListScreen() {
   const theme = useTheme();

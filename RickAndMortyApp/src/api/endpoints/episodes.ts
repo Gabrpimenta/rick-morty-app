@@ -1,3 +1,4 @@
+import { API_PATHS } from '@/constants/api';
 import apiClient from './rickAndMortyAPI';
 import type { EpisodesApiResponse, EpisodeFilters, Episode } from '@/types/api';
 
@@ -8,7 +9,7 @@ export const getEpisodes = async (filters: EpisodeFilters = {}): Promise<Episode
     if (filters.name) params.append('name', filters.name);
     if (filters.episode) params.append('episode', filters.episode);
 
-    const response = await apiClient.get<EpisodesApiResponse>(`/episode`, { params });
+    const response = await apiClient.get<EpisodesApiResponse>(API_PATHS.EPISODE, { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching episodes:', error);
@@ -18,7 +19,7 @@ export const getEpisodes = async (filters: EpisodeFilters = {}): Promise<Episode
 
 export const getEpisodeById = async (id: number): Promise<Episode> => {
   try {
-    const response = await apiClient.get<Episode>(`/episode/${id}`);
+    const response = await apiClient.get<Episode>(`${API_PATHS.EPISODE}/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching episode ${id}:`, error);
@@ -29,7 +30,9 @@ export const getEpisodeById = async (id: number): Promise<Episode> => {
 export const getMultipleEpisodes = async (ids: number[]): Promise<Episode[]> => {
   if (ids.length === 0) return [];
   try {
-    const response = await apiClient.get<Episode[] | Episode>(`/episode/${ids.join(',')}`);
+    const response = await apiClient.get<Episode[] | Episode>(
+      `${API_PATHS.EPISODE}/${ids.join(',')}`
+    );
 
     if (Array.isArray(response.data)) {
       return response.data;

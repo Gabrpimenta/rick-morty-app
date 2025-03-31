@@ -1,7 +1,5 @@
+import { FONT_FAMILY_BOLD, FONT_FAMILY_REGULAR } from '@/constants/layout';
 import { DefaultTheme } from 'styled-components/native';
-
-export const FONT_FAMILY_REGULAR = 'Exo2-Regular';
-export const FONT_FAMILY_BOLD = 'Exo2-Bold';
 
 const colors = {
   portalGreen: '#97F02A',

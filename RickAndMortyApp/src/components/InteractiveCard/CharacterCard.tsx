@@ -33,29 +33,22 @@ import {
   useAddFavoriteMutation,
   useRemoveFavoriteMutation,
 } from '@/features/favorites/hooks/useFavoriteMutations';
+import {
+  CARD_BORDER_RADIUS,
+  OVERLAY_HEIGHT_RATIO,
+  PADDING,
+  PERSPECTIVE,
+  ROTATION_LIMIT,
+  SPRING_CONFIG,
+  STATUS_INDICATOR_RADIUS,
+  TEXT_LINE_HEIGHT_GAP,
+} from '@/constants/layout';
 
 interface CharacterCardProps {
   item: Character;
   width: number;
   height: number;
 }
-
-// --- Constants ---
-const CARD_BORDER_RADIUS = 14;
-const PADDING = 14;
-const OVERLAY_HEIGHT_RATIO = 0.4;
-const STATUS_INDICATOR_RADIUS = 5;
-const TEXT_LINE_HEIGHT_GAP = 5;
-const ROTATION_LIMIT = 20;
-const SPRING_CONFIG = {
-  mass: 1,
-  damping: 18,
-  stiffness: 150,
-  overshootClamping: false,
-  restSpeedThreshold: 0.1,
-  restDisplacementThreshold: 0.1,
-};
-const PERSPECTIVE = 800;
 
 export function CharacterCard({ item, width, height }: CharacterCardProps) {
   const themeMode = useSelector((state: RootState) => state.theme.mode);

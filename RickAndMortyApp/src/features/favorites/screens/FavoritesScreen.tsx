@@ -29,7 +29,7 @@ const SectionHeaderText = styled.Text`
   margin-top: ${(props) => props.theme.spacing.large}px;
 `;
 
-export function FavoritesScreen () {
+export function FavoritesScreen() {
   const theme = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const cardWidth = screenWidth - LIST_PADDING * 2;
@@ -41,14 +41,14 @@ export function FavoritesScreen () {
     error,
     refetch,
   } = useQuery<SavedFavorite[], Error>({
-    queryKey: [ 'favorites' ],
+    queryKey: ['favorites'],
     queryFn: () => getFavorites(),
   });
 
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, [ refetch ])
+    }, [refetch])
   );
 
   const favoriteSections = useMemo(() => {
@@ -65,7 +65,7 @@ export function FavoritesScreen () {
       sections.push({ title: 'Favorite Episodes', data: episodes });
     }
     return sections;
-  }, [ favorites ]);
+  }, [favorites]);
 
   const renderFavoriteItem = ({ item }: ListRenderItemInfo<SavedFavorite>) => {
     return (
@@ -108,7 +108,7 @@ export function FavoritesScreen () {
   }
 
   return (
-    <View style={[ styles.container, { backgroundColor: theme.colors.background } ]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <SectionList
         sections={favoriteSections}
         renderItem={renderFavoriteItem}

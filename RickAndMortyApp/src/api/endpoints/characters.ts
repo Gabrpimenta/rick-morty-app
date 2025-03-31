@@ -1,3 +1,4 @@
+import { API_PATHS } from '@/constants/api';
 import apiClient from './rickAndMortyAPI';
 import type { CharactersApiResponse, CharacterFilters, Character } from '@/types/api';
 
@@ -13,7 +14,7 @@ export const getCharacters = async (
     if (filters.type) params.append('type', filters.type);
     if (filters.gender) params.append('gender', filters.gender);
 
-    const response = await apiClient.get<CharactersApiResponse>(`/character`, { params });
+    const response = await apiClient.get<CharactersApiResponse>(API_PATHS.CHARACTER, { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching characters:', error);
@@ -23,7 +24,7 @@ export const getCharacters = async (
 
 export const getCharacterById = async (id: number): Promise<Character> => {
   try {
-    const response = await apiClient.get<Character>(`/character/${id}`);
+    const response = await apiClient.get<Character>(`${API_PATHS.CHARACTER}/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching character ${id}:`, error);
@@ -34,7 +35,7 @@ export const getCharacterById = async (id: number): Promise<Character> => {
 export const getMultipleCharacters = async (ids: number[]): Promise<Character[]> => {
   if (ids.length === 0) return [];
   try {
-    const response = await apiClient.get<Character[]>(`/character/${ids.join(',')}`);
+    const response = await apiClient.get<Character[]>(`${API_PATHS.CHARACTER}/${ids.join(',')}`);
     return Array.isArray(response.data) ? response.data : [response.data];
   } catch (error) {
     console.error(`Error fetching multiple characters [${ids.join(',')}]:`, error);

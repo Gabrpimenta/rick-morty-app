@@ -1,9 +1,8 @@
+import { API_BASE_URL } from '@/constants/api';
 import axios from 'axios';
 
-const RICK_AND_MORTY_API_BASE_URL = 'https://rickandmortyapi.com/api';
-
 const apiClient = axios.create({
-  baseURL: RICK_AND_MORTY_API_BASE_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
