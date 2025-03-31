@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   Canvas,
   RoundedRect,
@@ -15,6 +15,7 @@ import {
   matchFont,
   type SkFont,
 } from '@shopify/react-native-skia';
+import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -27,6 +28,11 @@ import Animated, {
 import { RootState } from '@/store/rootReducer';
 import { lightTheme, darkTheme } from '@/config/theme';
 import type { Character } from '@/types/api';
+import { useIsFavorite } from '@/features/favorites/hooks/useIsFavorite';
+import {
+  useAddFavoriteMutation,
+  useRemoveFavoriteMutation,
+} from '@/features/favorites/hooks/useFavoriteMutations';
 
 interface CharacterCardProps {
   item: Character;
@@ -64,7 +70,7 @@ export function CharacterCard({ item, width, height }: CharacterCardProps) {
   const rotateX = useSharedValue(0);
   const rotateY = useSharedValue(0);
 
-  // --- Calculations (MADE WITH AI) ---
+  // --- Calculations ---
   const overlayHeight = height * OVERLAY_HEIGHT_RATIO;
   const overlayY = height - overlayHeight;
   const textStartY = overlayY + PADDING;
@@ -80,9 +86,7 @@ export function CharacterCard({ item, width, height }: CharacterCardProps) {
 
   // --- Gesture Handling ---
   const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      /* Optional */
-    })
+    .onBegin(() => {})
     .onChange((event) => {
       'worklet';
       rotateY.value = interpolate(
@@ -113,6 +117,13 @@ export function CharacterCard({ item, width, height }: CharacterCardProps) {
       transform: [{ perspective: PERSPECTIVE }, { rotateX: rotateXdeg }, { rotateY: rotateYdeg }],
     };
   });
+
+  const { data: isFavorited, isLoading: isLoadingFavoriteStatus } = useIsFavorite(
+    'character',
+    item.id
+  );
+  const addFavoriteMutation = useAddFavoriteMutation();
+  const removeFavoriteMutation = useRemoveFavoriteMutation();
 
   const titleStyle = {
     fontFamily: 'Exo2',
@@ -152,6 +163,22 @@ export function CharacterCard({ item, width, height }: CharacterCardProps) {
       </View>
     );
   }
+
+  const handleFavoriteToggle = () => {
+    if (
+      isLoadingFavoriteStatus ||
+      addFavoriteMutation.isPending ||
+      removeFavoriteMutation.isPending
+    ) {
+      return;
+    }
+
+    if (isFavorited) {
+      removeFavoriteMutation.mutate({ itemType: 'character', itemId: item.id });
+    } else {
+      addFavoriteMutation.mutate({ itemType: 'character', item: item });
+    }
+  };
 
   return (
     <GestureDetector gesture={panGesture}>
@@ -227,7 +254,42 @@ export function CharacterCard({ item, width, height }: CharacterCardProps) {
             color={overlayTextSecondaryColor}
           />
         </Canvas>
+        <TouchableOpacity
+          style={styles.favoriteButton}
+          onPress={handleFavoriteToggle}
+          disabled={
+            isLoadingFavoriteStatus ||
+            addFavoriteMutation.isPending ||
+            removeFavoriteMutation.isPending
+          }
+          activeOpacity={0.7}
+        >
+          <Ionicons
+            name={isFavorited ? 'heart' : 'heart-outline'}
+            size={28}
+            color={isFavorited ? theme.colors.error : theme.colors.textSecondary}
+          />
+        </TouchableOpacity>
       </Animated.View>
     </GestureDetector>
   );
 }
+
+const styles = StyleSheet.create({
+  absoluteFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: PADDING,
+    right: PADDING,
+    zIndex: 10,
+    padding: 4,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 20,
+  },
+});
