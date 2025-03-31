@@ -6,7 +6,7 @@ export const getEpisodes = async (filters: EpisodeFilters = {}): Promise<Episode
     const params = new URLSearchParams();
     if (filters.page) params.append('page', filters.page.toString());
     if (filters.name) params.append('name', filters.name);
-    if (filters.episode) params.append('episode', filters.episode); // Filter by episode code like "S01E01"
+    if (filters.episode) params.append('episode', filters.episode);
 
     const response = await apiClient.get<EpisodesApiResponse>(`/episode`, { params });
     return response.data;

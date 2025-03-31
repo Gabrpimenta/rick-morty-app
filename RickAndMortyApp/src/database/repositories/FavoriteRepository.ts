@@ -2,8 +2,8 @@ import { db } from '../sqlite';
 import type { Character, Episode } from '@/types/api';
 import * as SQLite from 'expo-sqlite';
 
-type ItemType = 'character' | 'episode';
-type FavoriteItem = Character | Episode;
+export type ItemType = 'character' | 'episode';
+export type FavoriteItem = Character | Episode;
 
 export type SavedFavorite = {
   dbId: number;
