@@ -74,7 +74,7 @@ export const darkTheme: DefaultTheme = {
     background: colors.almostBlack,
     surface: colors.darkGrey,
     textPrimary: colors.white,
-    textSecondary: '#BBBBBB',
+    textSecondary: '#F5F5F5',
     textDisabled: '#777777',
     border: '#444444',
     error: '#CF6679',
