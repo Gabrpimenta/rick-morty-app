@@ -10,12 +10,12 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((request) => {
-  console.log('Starting Request', request);
+  // console.log('Starting Request', request);
   return request;
 });
 
 apiClient.interceptors.response.use((response) => {
-  console.log('Received Response', response);
+  // console.log('Received Response', response);
   return response;
 });
 
