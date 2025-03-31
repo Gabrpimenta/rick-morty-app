@@ -22,14 +22,13 @@ import { styles } from './styles';
 const LIST_PADDING = 16;
 const EPISODE_CARD_HEIGHT = 120;
 
-export function EpisodeListScreen () {
+export function EpisodeListScreen() {
   const theme = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const cardWidth = screenWidth - LIST_PADDING * 2;
 
   // TODO: Add state for filters later
-  const filters = {
-  };
+  const filters = {};
 
   const {
     data,
@@ -44,8 +43,8 @@ export function EpisodeListScreen () {
   } = useEpisodeList(filters);
 
   const episodes = useMemo(() => {
-    return data?.pages.flatMap(page => page.results) ?? [];
-  }, [ data ]);
+    return data?.pages.flatMap((page) => page.results) ?? [];
+  }, [data]);
 
   const loadNextPage = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -69,7 +68,7 @@ export function EpisodeListScreen () {
   }
 
   return (
-    <View style={[ styles.container, { backgroundColor: theme.colors.background } ]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlashList
         data={episodes}
         renderItem={renderEpisodeCard}

@@ -15,17 +15,13 @@ interface ErrorDisplayProps {
   onRetry: () => void;
 }
 
-export function ErrorDisplay ({ message = 'Failed to load data', onRetry }: ErrorDisplayProps) {
+export function ErrorDisplay({ message = 'Failed to load data', onRetry }: ErrorDisplayProps) {
   const theme = useTheme();
 
   return (
     <CenteredContainer>
       <ErrorText>Error: {message}</ErrorText>
-      <Button
-        title="Retry"
-        onPress={onRetry}
-        color={theme.colors.primary}
-      />
+      <Button title="Retry" onPress={onRetry} color={theme.colors.primary} />
     </CenteredContainer>
   );
 }

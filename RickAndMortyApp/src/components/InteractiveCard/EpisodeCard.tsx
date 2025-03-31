@@ -24,7 +24,7 @@ const CARD_BORDER_RADIUS = 10;
 const PADDING = 12;
 const TEXT_LINE_HEIGHT_GAP = 5;
 
-export function EpisodeCard ({ item, width, height }: EpisodeCardProps) {
+export function EpisodeCard({ item, width, height }: EpisodeCardProps) {
   const themeMode = useSelector((state: RootState) => state.theme.mode);
   const theme = themeMode === 'light' ? lightTheme : darkTheme;
 
@@ -70,7 +70,11 @@ export function EpisodeCard ({ item, width, height }: EpisodeCardProps) {
         color={theme.colors.surface}
       />
       <RoundedRect x={0} y={0} width={width} height={height} r={CARD_BORDER_RADIUS}>
-        <LinearGradient start={vec(0, 0)} end={vec(width, height)} colors={[ theme.colors.surface, theme.isDark ? '#444' : '#eee' ]} />
+        <LinearGradient
+          start={vec(0, 0)}
+          end={vec(width, height)}
+          colors={[theme.colors.surface, theme.isDark ? '#444' : '#eee']}
+        />
       </RoundedRect>
       <SkiaText
         x={PADDING}

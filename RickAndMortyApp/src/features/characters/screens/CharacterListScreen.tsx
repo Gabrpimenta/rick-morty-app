@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   FlatList,
   TouchableOpacity,
-  type ListRenderItemInfo
+  type ListRenderItemInfo,
 } from 'react-native';
 import { useCharacterList } from '../hooks/useCharacterList';
 import { CharacterCard } from '@/components/InteractiveCard/CharacterCard';
@@ -21,12 +21,11 @@ import { InfoText } from '@/components/common/InfoText';
 import { CenteredContainer } from '@/components/common/CenteredContainer';
 import { CARD_VERTICAL_MARGIN, HORIZONTAL_PADDING, styles } from './styles';
 
-
-export function CharacterListScreen () {
+export function CharacterListScreen() {
   const theme = useTheme();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const flatListRef = useRef<FlatList<Character>>(null);
-  const [ currentIndex, setCurrentIndex ] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const cardWidth = screenWidth - HORIZONTAL_PADDING * 2;
   const cardHeight = screenHeight - CARD_VERTICAL_MARGIN * 2 - 50 - 60;
 
@@ -46,8 +45,8 @@ export function CharacterListScreen () {
 
   // Flatten data as before
   const characters = useMemo(() => {
-    return data?.pages.flatMap(page => page.results) ?? [];
-  }, [ data ]);
+    return data?.pages.flatMap((page) => page.results) ?? [];
+  }, [data]);
 
   const loadNextPage = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -73,22 +72,19 @@ export function CharacterListScreen () {
     handleScrollToIndex(currentIndex + 1);
   };
 
-  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: Array<{ index: number | null }> }) => {
-    if (viewableItems[ 0 ] && viewableItems[ 0 ].index !== null) {
-      setCurrentIndex(viewableItems[ 0 ].index);
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: Array<{ index: number | null }> }) => {
+      if (viewableItems[0] && viewableItems[0].index !== null) {
+        setCurrentIndex(viewableItems[0].index);
+      }
     }
-  }).current;
+  ).current;
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50 }).current;
-
 
   const renderCharacterCard = ({ item }: ListRenderItemInfo<Character>) => {
     return (
-      <View style={[ styles.cardContainer, { width: screenWidth } ]}>
-        <CharacterCard
-          item={item}
-          width={cardWidth}
-          height={cardHeight}
-        />
+      <View style={[styles.cardContainer, { width: screenWidth }]}>
+        <CharacterCard item={item} width={cardWidth} height={cardHeight} />
       </View>
     );
   };
@@ -102,7 +98,7 @@ export function CharacterListScreen () {
   }
 
   return (
-    <View style={[ styles.container, { backgroundColor: theme.colors.background } ]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         ref={flatListRef}
         data={characters}
@@ -120,7 +116,7 @@ export function CharacterListScreen () {
         initialNumToRender={1}
         ListFooterComponent={() =>
           isFetchingNextPage ? (
-            <View style={[ styles.cardContainer, styles.centerContent, { width: screenWidth / 2 } ]}>
+            <View style={[styles.cardContainer, styles.centerContent, { width: screenWidth / 2 }]}>
               <ActivityIndicator color={theme.colors.primary} />
             </View>
           ) : null
@@ -135,14 +131,33 @@ export function CharacterListScreen () {
       />
 
       <View style={styles.arrowContainer}>
-        <TouchableOpacity onPress={handlePrevious} disabled={currentIndex <= 0} style={styles.arrowButton}>
-          <Ionicons name="arrow-back-circle" size={40} color={currentIndex <= 0 ? theme.colors.textDisabled : theme.colors.primary} />
+        <TouchableOpacity
+          onPress={handlePrevious}
+          disabled={currentIndex <= 0}
+          style={styles.arrowButton}
+        >
+          <Ionicons
+            name="arrow-back-circle"
+            size={40}
+            color={currentIndex <= 0 ? theme.colors.textDisabled : theme.colors.primary}
+          />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext} disabled={currentIndex >= characters.length - 1 && !hasNextPage} style={styles.arrowButton}>
-          <Ionicons name="arrow-forward-circle" size={40} color={(currentIndex >= characters.length - 1 && !hasNextPage) ? theme.colors.textDisabled : theme.colors.primary} />
+        <TouchableOpacity
+          onPress={handleNext}
+          disabled={currentIndex >= characters.length - 1 && !hasNextPage}
+          style={styles.arrowButton}
+        >
+          <Ionicons
+            name="arrow-forward-circle"
+            size={40}
+            color={
+              currentIndex >= characters.length - 1 && !hasNextPage
+                ? theme.colors.textDisabled
+                : theme.colors.primary
+            }
+          />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
